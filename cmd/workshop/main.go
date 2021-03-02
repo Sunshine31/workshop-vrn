@@ -5,6 +5,7 @@ import (
 	"github.com/ilyakaznacheev/cleanenv"
 	"log"
 	"net/http"
+	"workshop/internal/api/jokes"
 	"workshop/internal/config"
 	"workshop/internal/handler"
 )
@@ -15,8 +16,8 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	h := handler.NewHandler()
+	apiClient := jokes.NewJokeClient(cfg.JokeURL)
+	h := handler.NewHandler(apiClient)
 	r := chi.NewRouter()
 	r.Get("/hello", h.Hello)
 	path := cfg.Host+":"+cfg.Port
